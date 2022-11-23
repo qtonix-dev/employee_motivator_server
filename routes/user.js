@@ -19,6 +19,20 @@ const upload = multer({
     storage:storage
 })
 
+
+
+
+router.post('/login',UserController.login);
+router.post('/userregister',UserController.userregister);
+
+
+////////////////////////
+
+
+
+
+
+
 router.get('/logindetails',UserController.logindetails);
 router.get('/logindetails/:id',UserController.logindetailsview);
 
@@ -44,7 +58,6 @@ router.post('/updatenew',UserController.updatenew);
 
 
 
-router.post('/login',UserController.login);
 router.get('/forgotpassword/:email',UserController.forgotpassword);
 router.get('/:id',UserController.view);
 

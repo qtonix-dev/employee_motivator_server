@@ -51,7 +51,7 @@ app.use(cors())
 
 app.get('/',(req,res)=>{
     // res.send({hi:'I am biswanath'});
-    res.send('<h1>Qtonix Blog Server</h1>');
+    res.send('<h1>employee_motivator_server</h1>');
     console.log(req.ipInfo)
     // res.render('pages/home');
 });

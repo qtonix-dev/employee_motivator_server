@@ -27,7 +27,8 @@ const index = (req,res) => {
   User.find().sort({createdAt:-1})
   .then(response=>{
     res.json({
-      response
+      response:true,
+      datas:response
     })
   })
   .catch({
@@ -93,26 +94,26 @@ const userregister = (req,res) => {
             if(doc.length>0){
               res.json({
                 response:false,
-                message:'Email Available'
+                message:'email_exist'
               })
             }else{
               var user = new User();
               user.name=req.body.name;
               user.email=req.body.email;
               user.password=req.body.password;
-              user.email_verify='Not Verified';
-              user.email_code=Math.floor(100000 + Math.random() * 900000);
-              user.usertype='User';
+              // user.email_verify='Not Verified';
+              // user.email_code=Math.floor(100000 + Math.random() * 900000);
+              // user.usertype='User';
               user.save((err,doc)=>{
                 if(!err){
                   res.json({
                     response:true,
-                    message:'Registration Success'
+                    message:'success'
                   })
                 }else{
                   res.json({
                     response:false,
-                    message:'Failed'
+                    message:'failed'
                   })
                 }
               })
@@ -338,8 +339,6 @@ const login = (req,res) => {
     password:req.body.password
   },function(err,doc){
 
-    console.log(doc)
-
     if(!err){
 
       if(doc === null){
@@ -348,38 +347,6 @@ const login = (req,res) => {
           message:'Check user email and password'
         })
       }else{
-
-
-        var logindetails = new LoginDetails();
-        logindetails.user_email = req.body.email;
-        logindetails.ip_ip = req.body.ip_ip;
-        logindetails.ip_continent_name = req.body.ip_continent_name;
-        logindetails.ip_country_name = req.body.ip_country_name;
-        logindetails.ip_country_code = req.body.ip_country_code;
-        logindetails.ip_region = req.body.ip_region;
-        logindetails.ip_city = req.body.ip_city;
-        logindetails.ip_latitude = req.body.ip_latitude;
-        logindetails.ip_longitude = req.body.ip_longitude;
-        logindetails.ip_country_flag = req.body.ip_country_flag;
-        logindetails.ip_timezone = req.body.ip_timezone;
-        logindetails.ip_country_calling_code = req.body.ip_country_calling_code;
-        logindetails.ip_currency = req.body.ip_currency;
-        logindetails.ip_currency_name = req.body.ip_currency_name;
-        logindetails.ip_languages = req.body.ip_languages;
-        logindetails.ip_country_area = req.body.ip_country_area;
-        logindetails.ip_country_area = req.body.ip_country_area;
-        logindetails.ip_country_population = req.body.ip_country_population;
-        logindetails.ip_org = req.body.ip_org;
-        logindetails.osName = req.body.osName;
-        logindetails.osVersion = req.body.osVersion;
-        logindetails.mobileVendor = req.body.mobileVendor;
-        logindetails.mobileModel = req.body.mobileModel;
-        logindetails.deviceType = req.body.deviceType;
-        logindetails.browserName = req.body.browserName;
-        logindetails.browserVersion = req.body.browserVersion;
-        logindetails.fullBrowserVersion = req.body.fullBrowserVersion;
-        logindetails.save();
-
 
         res.json({
           response:'true',
