@@ -9,15 +9,7 @@ const cors = require('cors');
 
 //===ROUTE INCLUDE===
 const RouteUser = require('./routes/user');
-const RouteBlog = require('./routes/blog');
-const RouterBlogCategory = require('./routes/blogcategory');
-const RouterBlogSubCategory = require('./routes/blogsubcategory');
-const RouteMenu = require('./routes/menu');
-const RoutePage = require('./routes/page');
-const GoogleNotification = require('./routes/googlenotification');
-const Image = require("./routes/image");
-const Consulting = require("./routes/consulting");
-const Subscribe = require("./routes/subscribe");
+const RouteEmployee = require('./routes/employee');
 //===ROUTE INCLUDE===
 
 
@@ -42,6 +34,9 @@ db.once('open',()=>{
 
 const app = express();
 
+
+
+
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -60,24 +55,30 @@ app.get('/',(req,res)=>{
 //     res.send(req.ipInfo);
 // });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on ${PORT}`)
 })
 
 
+// app.use((req, res, next) => {
+//
+//
+//
+//     // const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+//     // console.log(ip);
+//     //
+//     // res.status(403)
+//     // res.json({success: 0, message: 'you are blocked for some reason'})
+//
+// });
+
+
 //API ROUTES
 app.use('/api/user',RouteUser);
-app.use('/api/blog',RouteBlog);
-app.use('/api/blogcategory',RouterBlogCategory);
-app.use('/api/blogsubcategory',RouterBlogSubCategory);
-app.use('/api/menu',RouteMenu);
-app.use('/api/page',RoutePage);
-app.use('/api/googlenotification',GoogleNotification);
-app.use('/api/image',Image);
-app.use('/api/consulting',Consulting);
-app.use('/api/subscribe',Subscribe);
+app.use('/api/employee',RouteEmployee);
+
 
 //API ROUTES
 

@@ -21,46 +21,14 @@ const upload = multer({
 
 
 
-
+router.get('/',UserController.index);
 router.post('/login',UserController.login);
 router.post('/userregister',UserController.userregister);
-
-
-////////////////////////
-
-
-
-
-
-
-router.get('/logindetails',UserController.logindetails);
-router.get('/logindetails/:id',UserController.logindetailsview);
-
-
-//WEBSITE
-router.post('/userregister',UserController.userregister);
-router.post('/socialloginregister',UserController.socialloginregister);
 router.put('/userupdate/:id',UserController.userupdate);
-router.put('/userimageupdate/:id',upload.single('image'),UserController.userimageupdate);
-router.post('/send-email-verification-code',UserController.emailverificationcodesend);
-
-router.post('/verify-email-code',UserController.verifyemailcode);
-//WEBSITE
-
-
-
-router.get('/',UserController.index);
-router.post('/',upload.single('image'),UserController.store);
-router.put('/:id',upload.single('image'),UserController.update);
 router.patch('/:id',UserController.deleteuser);
-
-router.post('/updatenew',UserController.updatenew);
-
-
-
-router.get('/forgotpassword/:email',UserController.forgotpassword);
 router.get('/:id',UserController.view);
 
+////////////////////////
 
 
 

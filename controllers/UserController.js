@@ -1,7 +1,6 @@
 require('dotenv-safe').config();
 const {response} = require('express');
 const User = require('../models/User');
-const LoginDetails = require('../models/LoginDetails');
 const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
 
@@ -32,7 +31,7 @@ const index = (req,res) => {
     })
   })
   .catch({
-    response:'false'
+    response:false
   })
 }
 
@@ -43,7 +42,7 @@ const store = (req,res) => {
   User.create(req.body)
   .then(response=>{
     res.json({
-      response:'true'
+      response:true
     })
   })
 
@@ -94,7 +93,7 @@ const userregister = (req,res) => {
             if(doc.length>0){
               res.json({
                 response:false,
-                message:'email_exist'
+                message:'Email already exist'
               })
             }else{
               var user = new User();
@@ -128,64 +127,18 @@ const userregister = (req,res) => {
 
 
 
-//socialloginregister
-const socialloginregister = (req,res) => {
-  User.find({email: req.body.email}, (err,doc)=>{
-          if(!err){
-            if(doc.length>0){
-              res.json({
-                response:true,
-                data:doc[0],
-                message:'Login Success'
-              })
-            }else{
-              var user = new User();
-              user.email_verify="Verified";
-              user.email_code=Math.floor(100000 + Math.random() * 900000);
-              user.usertype='User';
-              user.name=req.body.name;
-              user.email=req.body.email;
-              user.password=req.body.password;
-              user.image=req.body.profilePicURL;
-              user.imagethumb=req.body.profilePicURL;
-              user.imagemedium=req.body.profilePicURL;
-              user.imagemedium=req.body.profilePicURL;
-              user.save((err,doc)=>{
-                if(!err){
-                  res.json({
-                    response:true,
-                    data:doc,
-                    message:'Registration Success'
-                  })
-                }else{
-                  res.json({
-                    response:false,
-                    message:'Failed'
-                  })
-                }
-              })
-            }
-          }else{
-            res.json({
-              message:'failed'
-            })
-          }
-      })
-}
-
-
 //VIEW
 const view = (req,res) => {
 
  User.findById(req.params.id, (err,doc) => {
    if(!err){
      res.json({
-       response:'true',
+       response:true,
        data:doc
      })
    }else{
      res.json({
-       response:'false',
+       response:false,
 
      })
    }
@@ -196,87 +149,17 @@ const view = (req,res) => {
 //UPDATE
 const update = (req,res) => {
 
-  if(req.file){
-    sharp(req.file.path).rotate().resize(150, 150).toFile('uploads/userimages/' + 'small-' + req.file.filename, (err, resizeImage) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(resizeImage);
-      }
-    })
-  }
-
-  let updatedData = {
-    name:req.body.name,
-    contact:req.body.contact,
-    usertype:req.body.usertype,
-    city:req.body.city,
-    state:req.body.state,
-    country:req.body.country
-  }
-
-  if(req.file){
-    updatedData.image = req.file.path;
-    updatedData.imagethumb = 'uploads/userimages/' + 'small-'+ req.file.filename;
-  }
-
-  User.findByIdAndUpdate(req.params.id, {$set: updatedData})
+  User.findByIdAndUpdate(req.params.id, {$set: req.body})
   .then(response=>{
     res.json({
-      response:'true',
+      response:true,
       data:response
     })
   })
 }
 
 
-const updatenew = (req,res) => {
-  User.findByIdAndUpdate(req.body.id, {$set: req.body})
-  .then(response=>{
-    res.json({
-      response:'true',
-      data:response
-    })
-  })
-}
 
-
-//UPDATE WEBSITE USER IMAGE
-const userimageupdate = (req,res) => {
-
-  if(req.file){
-    sharp(req.file.path).rotate().resize(150, 150).toFile('uploads/userimages/' + 'small-' + req.file.filename, (err, resizeImage) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(resizeImage);
-      }
-    })
-  }
-
-  let updatedData = {}
-  if(req.file){
-    updatedData.image = req.file.path;
-    updatedData.imagethumb = process.env.WEBSITE+'/uploads/userimages/' + 'small-'+ req.file.filename;
-  }
-
-  User.findByIdAndUpdate(req.params.id, {$set: updatedData})
-  .then(response=>{
-
-    User.findById(req.params.id, (err,doc) => {
-      if(!err){
-        res.json({
-          response:'true',
-          data:doc
-        })
-      }else{
-        res.json({
-          response:'false',
-        })
-      }
-    })
-  })
-}
 
 
 //UPDATE WEBSITE USER DETAILS
@@ -340,24 +223,21 @@ const login = (req,res) => {
   },function(err,doc){
 
     if(!err){
-
       if(doc === null){
         res.json({
-          response:'false',
-          message:'Check user email and password'
+          response:false,
+          message:'Please check email and password'
         })
       }else{
-
         res.json({
-          response:'true',
+          response:true,
+          message:'Success',
           data:doc
         })
-
       }
-
     }else{
       res.json({
-        response:'false',
+        response:false,
         message:'Login failed'
       })
     }
@@ -365,224 +245,11 @@ const login = (req,res) => {
 }
 
 
-// LOGIN DETAILS
-const logindetails = (req,res) => {
-  LoginDetails.find().sort({createdAt:-1})
-  .then(response=>{
-    res.json({
-      response:true,
-      data:response
-    })
-  })
-}
 
 
-// VIEW LOGIN DETAILS
-const logindetailsview = (req,res) => {
-  LoginDetails.findById(req.params.id, (err,doc) => {
-    if(!err){
-      res.json({
-        response:'true',
-        data:doc
-      })
-    }else{
-      res.json({
-        response:'false',
-
-      })
-    }
-  })
-}
-
-const forgotpassword = (req,res) => {
-
-  User.findOne({
-    email:req.params.email
-  },function(err,doc){
-    if(!err){
-
-      if(doc===null){
-        res.json({
-          response:'false',
-          message:'Email is not registrated',
-          ip:req.ipInfo
-
-        })
-      }else{
-
-        // email.send({
-        //   template: 'hello',
-        //   message: {
-        //     from: process.env.EMAIL_USER,
-        //     to: req.params.email,
-        //     // attachments: [
-        //     //   {
-        //     //     filename: 'thankyou.docx',
-        //     //     content: 'Thanks'
-        //     //   }
-        //     // ]
-        //   },
-        //   locals: {
-        //     name: doc.name,
-        //     password:doc.password
-        //   }
-      	// }).then(() => console.log('email has been sent!'));
-
-
-
-        email.send({
-          template:'emailpassword',
-          message:{
-            from:process.env.APP_NAME+' '+process.env.EMAIL_USER,
-            to:req.params.email
-          },
-          locals:{
-            name:doc.name,
-            password:doc.password
-          }
-        }).then(()=>console.log('Email has been sent!'));
-
-
-
-        res.json({
-          response:'true',
-          data:doc
-        })
-      }
-    }else{
-
-    }
-  })
-
-}
-
-
-
-
-
-
-const emailverificationcodesend = (req,res) => {
-  const user = req.body;
-
-  User.findById(user.id,(err,doc)=>{
-    if(!err){
-
-      // email.send({
-      //   template:'emailverification',
-      //   message:{
-      //     from:process.env.EMAIL_USER,
-      //     to:user.email,
-      //     // attachments: [
-      //     //   {
-      //     //     filename: 'thankyou.docx',
-      //     //     content: 'Thanks'
-      //     //   }
-      //     // ],
-      //     locals:{
-      //       website:process.env.APP_NAME,
-      //       websiteurl:process.env.APP_WEBSITEURL,
-      //       name:doc.name,
-      //       email:doc.email,
-      //       verifycode:doc.email_code,
-      //       url:process.env.APP_WEBSITEURL+'/emailverification/'+doc.email_code
-      //     }
-      //   }
-      // }).then(() => console.log('email has been sent!'));
-
-
-      email.send({
-        template: 'emailverification',
-        message: {
-          from:process.env.APP_NAME+' '+process.env.EMAIL_USER,
-          to:user.email,
-        },
-        locals: {
-          name:doc.name,
-          verifycode:doc.email_code,
-          fname: 'John',
-          lname: 'Snow',
-        }
-      }).then(() => console.log('email has been sent!'));
-
-      res.json({
-        response:true,
-        message:'Email send',
-        data:doc,
-        id:user.id,
-        url:process.env.APP_WEBSITEURL+'/emailverification/'+doc.email_code
-      })
-
-    }else{
-      res.json({
-        response:false
-      })
-    }
-  })
-
-
-  // res.json({
-  //   email:user.email,
-  //   id:user.id,
-  //   uniqueid:uuidv4()+uuidv4()+uuidv4()+uuidv4()
-  // })
-
-}
-
-
-const verifyemailcode = (req, res) => {
-  const user = req.body;
-
-  User.findOne({
-    _id:user.id,
-    email_code:user.code
-  },(err,doc)=>{
-    if(!err){
-
-      if(doc===null){
-        res.json({
-          response:false
-        })
-      }else{
-
-        var udata={
-          email_verify:'Verified'
-        }
-
-        User.findByIdAndUpdate(user.id,{$set:udata},(err,docn)=>{
-          if(!err){
-            res.json({
-              response:true,
-              data:docn
-            })
-          }else{
-            res.json({
-              response:false
-            })
-          }
-        })
-
-      }
-
-    }else{
-      res.json({
-        response:false
-      })
-    }
-  })
-
-  // User.findById(user.id,(err,doc)=>{
-  //   if(!err){
-  //     res.json({
-  //       response:true,
-  //       data:doc
-  //     })
-  //   }
-  // })
-
-}
 
 
 
 
 // **MODULE EXPORTS**
-module.exports = {index, store, update,deleteuser,updatenew, login, forgotpassword, view, logindetails, logindetailsview, userregister, socialloginregister, userupdate, userimageupdate, emailverificationcodesend, verifyemailcode}
+module.exports = {index,  userupdate,deleteuser, login,  view, userregister}

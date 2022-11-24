@@ -12,7 +12,9 @@ const usersSchema = new Schema({
   password:{
     type:String
   },
-
+  status:{
+    type:String
+  },
 },{timestamps:true});
 
 const User = mongoose.model('User',usersSchema);
