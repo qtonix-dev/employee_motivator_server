@@ -100,6 +100,8 @@ const userregister = (req,res) => {
               user.name=req.body.name;
               user.email=req.body.email;
               user.password=req.body.password;
+              user.status=req.body.status;
+
               // user.email_verify='Not Verified';
               // user.email_code=Math.floor(100000 + Math.random() * 900000);
               // user.usertype='User';

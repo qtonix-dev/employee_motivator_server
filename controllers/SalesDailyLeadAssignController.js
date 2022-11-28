@@ -1,10 +1,10 @@
 require('dotenv-safe').config();
 const {response} = require('express');
-const Employee = require('../models/Employee');
+const SalesDailyLeadAssign = require('../models/SalesDailyLeadAssign');
 
 //SHOW ALL USERS
 const index = (req,res) => {
-  Employee.find().populate('department_id',['_id', 'name']).populate('designation_id',['name']).populate('reporting_to',['name']).sort({createdAt:-1})
+  SalesDailyLeadAssign.find().populate('employee_id').sort({createdAt:-1})
   .then(response=>{
     res.json({
       response:true,
@@ -16,9 +16,9 @@ const index = (req,res) => {
   })
 }
 
-//STORE Employee DETAILS
+//STORE SalesDailyLeadAssign DETAILS
 const store = (req,res) => {
-  Employee.create(req.body)
+  SalesDailyLeadAssign.create(req.body)
   .then(response=>{
     res.json({
       response:true
@@ -29,7 +29,7 @@ const store = (req,res) => {
 
 //VIEW
 const view = (req,res) => {
- Employee.findById(req.params.id, (err,doc) => {
+ SalesDailyLeadAssign.findById(req.params.id, (err,doc) => {
    if(!err){
      res.json({
        response:true,
@@ -45,7 +45,7 @@ const view = (req,res) => {
 
 //UPDATE
 const update = (req,res) => {
-  Employee.findByIdAndUpdate(req.params.id, {$set: req.body})
+  SalesDailyLeadAssign.findByIdAndUpdate(req.params.id, {$set: req.body})
   .then(response=>{
     res.json({
       response:true,
@@ -56,7 +56,7 @@ const update = (req,res) => {
 
 
 const deleteuser = (req,res) => {
-  Employee.findByIdAndRemove(req.params.id, (err,doc) => {
+  SalesDailyLeadAssign.findByIdAndRemove(req.params.id, (err,doc) => {
     if(!err){
       res.json({
         response:true

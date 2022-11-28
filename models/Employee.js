@@ -18,28 +18,40 @@ const employeeSchema = new Schema({
   dob:{
     type:String
   },
-  Marriage_anniversary_date:{
+  marriage_anniversary_date :{
     type:String
   },
   hobby:{
     type:String
   },
-  designation:{
-    type:String
+  // designation:{
+  //   type:String
+  // },
+  designation_id:{
+    type:mongoose.Schema.Types.ObjectId,ref:'Designation'
   },
-  Joiningdate:{
+  joining_date:{
     type:String
   },
   employee_type:{
     type:String
   },
+  // department_id:{
+  //   type:String
+  // },
   department_id:{
-    type:String
+    type:mongoose.Schema.Types.ObjectId,ref:'Department'
   },
   reporting_to:{
     type:String
   },
   team:{
+    type:String
+  },
+  gender:{
+    type:String
+  },
+  location:{
     type:String
   },
   is_team_leader :{

@@ -20,7 +20,6 @@ const upload = multer({
 })
 
 
-
 router.get('/',UserController.index);
 router.post('/login',UserController.login);
 router.post('/userregister',UserController.userregister);
