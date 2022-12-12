@@ -17,6 +17,8 @@ const RouteSalesMonthlyTargetDollar = require('./routes/salesmonthlytargetdollar
 const RoutePreSalesMonthlyTargetNumber = require('./routes/presalesmonthlytargetnumber');
 const RoutePreSalesDailyLeadAssign = require('./routes/salesdailyleadassign');
 const RoutePreSalesDailyRecord = require('./routes/salesdailyrecord');
+const RouteCompany = require('./routes/company');
+
 //===ROUTE INCLUDE===
 
 
@@ -103,6 +105,8 @@ app.use('/api/salesmonthlytargetdollar',RouteSalesMonthlyTargetDollar);
 app.use('/api/presalesmonthlytargetnumber',RoutePreSalesMonthlyTargetNumber);
 app.use('/api/salesdailyleadassign',RoutePreSalesDailyLeadAssign);
 app.use('/api/salesdailyrecord',RoutePreSalesDailyRecord);
+app.use('/api/company',RouteCompany);
+
 
 
 

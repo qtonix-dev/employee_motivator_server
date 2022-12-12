@@ -3,14 +3,22 @@ const Schema = mongoose.Schema;
 const sharp = require('sharp');
 
 const employeeSchema = new Schema({
+  isAdmin:{
+    type:Boolean,
+    default:false
+  },
   name:{
     type:String
   },
   email:{
     type:String
   },
-  phone:{
+  password:{
     type:String
+  },
+  phone:{
+    type:String,
+    default:''
   },
   employee_id:{
     type:String
@@ -46,7 +54,7 @@ const employeeSchema = new Schema({
     type:String
   },
   team:{
-    type:String
+  type:mongoose.Schema.Types.ObjectId,ref:'Team'
   },
   gender:{
     type:String

@@ -6,9 +6,15 @@ const teamSchema = new Schema({
   name:{
     type:String
   },
-  // teamleader:{
-  //   type:mongoose.Schema.Types.ObjectId,ref:'Employee'
-  // },
+  department_id:{
+    type:mongoose.Schema.Types.ObjectId,ref:'Department'
+  },
+
+  // employees_ids:[{type:mongoose.Schema.Types.ObjectId,ref:'Employee'}],
+
+  color:{
+    type:String
+  },
 },{timestamps:true});
 
 const Team = mongoose.model('Team',teamSchema);

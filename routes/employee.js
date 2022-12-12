@@ -9,4 +9,8 @@ router.put('/:id',EmployeeController.update);
 router.patch('/:id',EmployeeController.deleteuser);
 router.get('/:id',EmployeeController.view);
 
+
+router.get('/employee_name_search/:name',EmployeeController.employeenamesearch);
+
+
 module.exports = router;

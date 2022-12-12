@@ -23,7 +23,10 @@ const upload = multer({
 router.get('/',UserController.index);
 router.post('/login',UserController.login);
 router.post('/userregister',UserController.userregister);
-router.put('/userupdate/:id',UserController.userupdate);
+router.put('/update/:id',UserController.update);
+router.put('/updatepassword/:id',UserController.updatepassword);
+
+
 router.patch('/:id',UserController.deleteuser);
 router.get('/:id',UserController.view);
 

@@ -15,6 +15,12 @@ const usersSchema = new Schema({
   status:{
     type:String
   },
+  type:{
+    type:String
+  },
+  employee_id:{
+    type:String
+  }
 },{timestamps:true});
 
 const User = mongoose.model('User',usersSchema);

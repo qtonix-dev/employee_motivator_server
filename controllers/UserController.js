@@ -1,6 +1,10 @@
 require('dotenv-safe').config();
 const {response} = require('express');
 const User = require('../models/User');
+const Employee = require('../models/Employee');
+
+
+
 const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
 
@@ -151,13 +155,82 @@ const view = (req,res) => {
 //UPDATE
 const update = (req,res) => {
 
-  User.findByIdAndUpdate(req.params.id, {$set: req.body})
+  Employee.findByIdAndUpdate(req.params.id, {$set: req.body})
   .then(response=>{
-    res.json({
-      response:true,
-      data:response
+
+    Employee.findById(req.params.id)
+    .then(dat=>{
+      res.json({
+        response:true,
+        data:dat
+      })
     })
+
+
   })
+}
+
+
+const updatepassword = (req,res) => {
+  console.log(req.body)
+
+  Employee.findById(req.params.id)
+  .then(data=>{
+
+    if(data.password===req.body.current_password){
+
+      let updatedData = {
+        password:req.body.new_password,
+      }
+
+      Employee.findByIdAndUpdate(req.params.id, {$set: updatedData})
+      .then(repos=>{
+        res.json({
+          response:true,
+          message:'Success'
+        })
+      })
+
+    }else{
+      res.json({
+        response:false,
+        message:'incorrect old password'
+      })
+    }
+
+    console.log(data)
+  })
+
+  // User.findById(req.params.id)
+  // .then(data=>{
+  //
+  //   if(data.password===req.body.current_password){
+  //
+  //     let updatedData = {
+  //       password:req.body.new_password,
+  //     }
+  //
+  //     User.findByIdAndUpdate(req.params.id, {$set: updatedData})
+  //     .then(repos=>{
+  //       res.json({
+  //         response:true,
+  //         message:'Success'
+  //       })
+  //     })
+  //
+  //
+  //
+  //   }else{
+  //     res.json({
+  //       response:false,
+  //       message:'incorrect old password'
+  //     })
+  //   }
+  //
+  //   console.log(data)
+  // })
+
+
 }
 
 
@@ -219,7 +292,7 @@ const deleteuser = (req,res) => {
 
 //LOGIN
 const login = (req,res) => {
-  User.findOne({
+  Employee.findOne({
     email:req.body.email,
     password:req.body.password
   },function(err,doc){
@@ -231,11 +304,18 @@ const login = (req,res) => {
           message:'Please check email and password'
         })
       }else{
-        res.json({
-          response:true,
-          message:'Success',
-          data:doc
-        })
+        if(doc.isAdmin){
+          res.json({
+            response:true,
+            message:'Success',
+            data:doc
+          })
+        }else{
+          res.json({
+            response:false,
+            message:'This account is not admin account'
+          })
+        }
       }
     }else{
       res.json({
@@ -254,4 +334,4 @@ const login = (req,res) => {
 
 
 // **MODULE EXPORTS**
-module.exports = {index,  userupdate,deleteuser, login,  view, userregister}
+module.exports = {index,  update,deleteuser, login,  view, userregister,updatepassword}
