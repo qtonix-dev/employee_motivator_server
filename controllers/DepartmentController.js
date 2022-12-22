@@ -4,7 +4,6 @@ const Department = require('../models/Department');
 const Employee = require('../models/Employee');
 var mongoose = require('mongoose');
 
-
 //SHOW ALL USERS
 const index = (req,res) => {
   // Department.find().populate('teamleader').sort({createdAt:-1})
@@ -20,12 +19,22 @@ const index = (req,res) => {
 
 
   Department.aggregate([
+    // {$lookup:{
+    //   from:'employees',
+    //   localField:'_id',
+    //   foreignField:'department_id',
+    //   as:'employees'
+    // }}
     {$lookup:{
-      from:'employees',
+      from:'teams',
       localField:'_id',
       foreignField:'department_id',
-      as:'employees'
-    }}
+      as:'teams',
+      // pipeline:[
+      //   { $addFields: {studentCountdwdw: {$size: "$teams"}}},
+      // ]
+    }},
+
   ]).exec((err, response) => {
       res.json({
         response:true,
@@ -50,49 +59,71 @@ const store = (req,res) => {
 //VIEW
 const view = (req,res) => {
 
-  Department.findById(req.params.id).populate('department_head')
-  .then(data=>{
-    res.json({
-      response:true,
-      data:data
-    })
-  })
+  // Department.findById(req.params.id).populate('department_head')
+  // .then(data=>{
+  //   res.json({
+  //     response:true,
+  //     data:data
+  //   })
+  //
+  //
+  //   console.log(data.team_head);
+  //   console.log(data.team_members);
+  //
+  //
+  //
+  //
+  // })
 
- // Department.findById(req.params.id, (err,doc) => {
- //   if(!err){
- //     res.json({
- //       response:true,
- //       data:doc
- //     })
- //   }else{
- //     res.json({
- //       response:false,
- //     })
- //   }
- // })
 
- // Department.aggregate([
- //     {$match: { "_id": mongoose.Types.ObjectId(req.params.id) }},
- //     // {$lookup:{
- //     //     from:'employees',
- //     //     localField:'_id',
- //     //     foreignField:'department_id',
- //     //     as:'employee_list'
- //     // }},
- //     {$lookup:{
- //         from:'employees',
- //         localField:'_id',
- //         foreignField:'department_head',
- //         as:'department_head'
- //     }}
- // ]).exec((err, doc) => {
- //   // console.log(err)
- //   //  console.log(response)
- //   res.json({
- //     response:true,
- //     data:doc[0]
- //   })
- // })
+
+ Department.aggregate([
+     {$match: { "_id": mongoose.Types.ObjectId(req.params.id) }},
+     {$lookup:{
+       from:'employees',
+       localField:'department_head',
+       foreignField:'_id',
+       as:'department_head_info',
+       // pipeline:[
+       //   {
+       //    $match: {
+       //      "department_head": {
+       //        $exists: true,
+       //        // $ne: [],
+       //      },
+       //    }
+       //  },
+       // ]
+     }},
+     // {
+     //    $unwind: '$department_head_info'
+     // },
+     {$lookup:{
+         from:'teams',
+         localField:'_id',
+         foreignField:'department_id',
+         as:'teams',
+         pipeline:[
+           {$lookup:{
+             from:'employees',
+             localField:'team_head',
+             foreignField:'_id',
+             as:'team_head'
+           }},
+           {$lookup:{
+             from:'employees',
+             localField:'team_members',
+             foreignField:'_id',
+             as:'team_members'
+           }}
+         ]
+     }}
+ ]).exec((err, doc) => {
+   res.json({
+     response:true,
+     data:doc[0]
+   })
+ })
 
 
 }

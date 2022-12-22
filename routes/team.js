@@ -9,4 +9,11 @@ router.put('/:id',TeamController.update);
 router.patch('/:id',TeamController.deleteuser);
 router.get('/:id',TeamController.view);
 
+router.post('/update_team_members',TeamController.update_team_members);
+
+router.post('/remove_team_member',TeamController.remove_team_member);
+
+
+
+
 module.exports = router;

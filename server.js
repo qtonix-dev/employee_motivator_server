@@ -6,6 +6,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 // const expressip = require('express-ip');
 
+const sharp = require('helmet');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 //===ROUTE INCLUDE===
 const RouteUser = require('./routes/user');
@@ -18,6 +20,9 @@ const RoutePreSalesMonthlyTargetNumber = require('./routes/presalesmonthlytarget
 const RoutePreSalesDailyLeadAssign = require('./routes/salesdailyleadassign');
 const RoutePreSalesDailyRecord = require('./routes/salesdailyrecord');
 const RouteCompany = require('./routes/company');
+const RouteImage = require('./routes/image');
+const RouteProject = require('./routes/project');
+
 
 //===ROUTE INCLUDE===
 
@@ -28,6 +33,12 @@ const RouteCompany = require('./routes/company');
 
 
 mongoose.connect('mongodb+srv://mongodb:i6QpsrcM04zFhSKQ@cluster0.xeudb.mongodb.net/employeemotivator?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology:true});
+
+
+
+// mongoose.connect('mongodb+srv://userjohndoe:PLk9Yj806VnGTDXa@devsite.vi3aswm.mongodb.net/development?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology:true});
+
+
 
 
 const db = mongoose.connection;
@@ -87,6 +98,38 @@ app.get('/',(req,res)=>{
 //     res.send(req.ipInfo);
 // });
 
+app.get('/mergeimage', async (req,res)=>{
+
+  const image = await fetch("https://via.placeholder.com/800X3000");
+  const imageBuffer = await image.buffer();
+
+
+  const imageSharp = await sharp()
+
+
+
+  let resizedPhoto
+    await sharp(imageBuffer)
+      .resize({ width: 1200, height: 900, fit: 'fill' })
+      .toBuffer()
+      .then((data) => {
+        resizedPhoto = data
+      })
+      .catch((err) => {})
+
+
+  console.log(imageBuffer)
+
+
+
+
+
+  res.json({
+    imageBuffer
+  })
+
+});
+
 
 const PORT = process.env.PORT || 5001;
 
@@ -106,10 +149,8 @@ app.use('/api/presalesmonthlytargetnumber',RoutePreSalesMonthlyTargetNumber);
 app.use('/api/salesdailyleadassign',RoutePreSalesDailyLeadAssign);
 app.use('/api/salesdailyrecord',RoutePreSalesDailyRecord);
 app.use('/api/company',RouteCompany);
-
-
-
-
+app.use('/api/image',RouteImage);
+app.use('/api/project',RouteProject);
 //API ROUTES
 
 

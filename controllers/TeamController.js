@@ -49,23 +49,31 @@ const store = (req,res) => {
 const view = (req,res) => {
 
 
-
-  Team.aggregate([
-      {$match: { "_id": mongoose.Types.ObjectId(req.params.id) }},
-      {$lookup:{
-          from:'employees',
-          localField:'_id',
-          foreignField:'team',
-          as:'employee_list'
-      }}
-  ]).exec((err, doc) => {
-    // console.log(err)
-    //  console.log(response)
+  Team.findById(req.params.id).populate('team_head').populate('team_members').populate('department_id')
+  .then(data=>{
     res.json({
       response:true,
-      data:doc
+      data:data
     })
   })
+
+
+  // Team.aggregate([
+  //     {$match: { "_id": mongoose.Types.ObjectId(req.params.id) }},
+  //     {$lookup:{
+  //         from:'employees',
+  //         localField:'_id',
+  //         foreignField:'team',
+  //         as:'employee_list'
+  //     }}
+  // ]).exec((err, doc) => {
+  //   // console.log(err)
+  //   //  console.log(response)
+  //   res.json({
+  //     response:true,
+  //     data:doc
+  //   })
+  // })
 
 
 
@@ -104,13 +112,26 @@ const view = (req,res) => {
 
 //UPDATE
 const update = (req,res) => {
+
   Team.findByIdAndUpdate(req.params.id, {$set: req.body})
   .then(response=>{
-    res.json({
-      response:true,
-      data:response
+    Team.findById(req.params.id).populate('team_head')
+    .then(data=>{
+      res.json({
+        response:true,
+        data:data
+      })
     })
   })
+
+
+  // Team.findByIdAndUpdate(req.params.id, {$set: req.body})
+  // .then(response=>{
+  //   res.json({
+  //     response:true,
+  //     data:response
+  //   })
+  // })
 }
 
 
@@ -143,5 +164,45 @@ const deleteuser = (req,res) => {
 }
 
 
+
+//Update Team Leader
+const update_team_members = (req,res) => {
+
+
+    // console.log(req.body)
+
+    Team.findByIdAndUpdate(req.body._id,{$set:{team_members:req.body.team_members}})
+    .then(response=>{
+      res.json({
+        response:true
+      })
+    })
+
+}
+
+
+
+//Remove Team Member
+const remove_team_member = (req,res) => {
+
+  Team.update({ _id: req.body.team_id }, { $pull: { team_members: { $in: req.body.member_id } }}, { safe: true, multi:true }, function(err, obj) {
+
+    if(err){
+      console.log(err)
+      res.json({
+        response:false,
+      })
+    }else{
+      res.json({
+        response:true
+      })
+    }
+
+  });
+
+
+}
+
+
 // **MODULE EXPORTS**
-module.exports = {index,store,view,update,deleteuser}
+module.exports = {index,store,view,update,deleteuser,update_team_members,remove_team_member}

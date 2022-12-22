@@ -1,6 +1,15 @@
 require('dotenv-safe').config();
 const {response} = require('express');
 const Employee = require('../models/Employee');
+const moment = require('moment')
+const ImageKit = require("imagekit");
+var imagekit = new ImageKit({
+  publicKey: process.env.IMAGEKIT_PUBLICKEY,
+  privateKey: process.env.IMAGEKIT_PRIVATEKEY,
+  urlEndpoint: process.env.IMAGEKIT_URLENDPOINTKEY,
+});
+
+
 
 //SHOW ALL USERS
 const index = (req,res) => {
@@ -97,5 +106,56 @@ const employeenamesearch = (req,res) => {
 
 
 
+
+//UPDATE PROFILE IMAGE
+const upload_profile_image = (req,res) => {
+
+  const encoded = req.file.buffer.toString("base64");
+
+  imagekit
+    .upload({
+      file: encoded,
+      // fileName: "image.jpg",
+      fileName: "image",
+      useUniqueFileName: true,
+      folder: "employee_motivator",
+    })
+    .then((response) => {
+      Image.create(response);
+      res.json({
+        response: true,
+        data: response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        response: error,
+      });
+    });
+
+
+
+}
+
+
+
+//GET BIRTHDAY DETAILS
+const birthdaydetails = (req,res) => {
+
+  // const today = moment().startOf('day');
+  now = moment();
+  Employee.find({dob: {$gte: moment(now).startOf('day'), $lte: moment(now).endOf('day')}}).select('name picture email emp_number')
+  .then(response=>{
+    res.json({
+      response:true,
+      datas:response,
+    })
+  })
+
+
+
+}
+
+
 // **MODULE EXPORTS**
-module.exports = {index,store,view,update,deleteuser,employeenamesearch}
+module.exports = {index,store,view,update,deleteuser,employeenamesearch,upload_profile_image,birthdaydetails}

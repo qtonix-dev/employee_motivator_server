@@ -155,16 +155,23 @@ const view = (req,res) => {
 //UPDATE
 const update = (req,res) => {
 
+console.log(req.body)
+
   Employee.findByIdAndUpdate(req.params.id, {$set: req.body})
   .then(response=>{
 
     Employee.findById(req.params.id)
     .then(dat=>{
+
+      console.log(dat)
+
       res.json({
         response:true,
         data:dat
       })
     })
+
+
 
 
   })
