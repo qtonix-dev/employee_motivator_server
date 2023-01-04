@@ -7,14 +7,16 @@ const employeeSchema = new Schema({
     type:Boolean,
     default:false
   },
-
+  is_reporting_manager:{
+    type:Boolean,
+    default:false
+  },
   company:{
     type:String
   },
   is_same_address :{
     type:Boolean
   },
-
   picture:{
     type:String
   },

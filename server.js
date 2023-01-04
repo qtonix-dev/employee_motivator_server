@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 // const expressip = require('express-ip');
-
+var passport = require('passport');
 const sharp = require('helmet');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
@@ -22,6 +22,7 @@ const RoutePreSalesDailyRecord = require('./routes/salesdailyrecord');
 const RouteCompany = require('./routes/company');
 const RouteImage = require('./routes/image');
 const RouteProject = require('./routes/project');
+const RouteBirthday = require('./routes/birthday');
 
 
 //===ROUTE INCLUDE===
@@ -94,6 +95,39 @@ app.get('/',(req,res)=>{
     // res.render('pages/home');
 });
 
+
+
+
+app.get('/googlelogin',(req,res)=>{
+  var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+
+passport.use(new GoogleStrategy({
+    clientID:     '74119569687-uve7kucug4mlhgom87srambv6c524ji9.apps.googleusercontent.com',
+    clientSecret: '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',
+    callbackURL: "http://yourdomain:3000/auth/google/callback",
+    passReqToCallback   : true
+  },
+  function(request, accessToken, refreshToken, profile, done) {
+
+    console.log(profile)
+
+    // User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    //   return done(err, user);
+    // });
+  }
+));
+
+
+})
+
+
+
+
+
+
+
+
+
 // app.get('/ip',(req,res)=>{
 //     res.send(req.ipInfo);
 // });
@@ -151,6 +185,7 @@ app.use('/api/salesdailyrecord',RoutePreSalesDailyRecord);
 app.use('/api/company',RouteCompany);
 app.use('/api/image',RouteImage);
 app.use('/api/project',RouteProject);
+app.use('/api/birthday',RouteBirthday);
 //API ROUTES
 
 

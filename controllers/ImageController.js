@@ -25,6 +25,12 @@ const index = (req, res) => {
   });
 };
 
+
+
+
+
+
+
 //***STORE***
 const store = (req, res) => {
   const encoded = req.file.buffer.toString("base64");
@@ -37,15 +43,12 @@ const store = (req, res) => {
       folder: "employee_motivator",
     })
     .then((response) => {
+
+
       res.json({
         response: true,
         data: response,
       });
-      // Image.create(response);
-      // res.json({
-      //   response: true,
-      //   data: response,
-      // });
     })
     .catch((error) => {
       res.json({

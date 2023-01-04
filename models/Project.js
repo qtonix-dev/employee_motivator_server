@@ -1,14 +1,140 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const sharp = require('sharp');
+const { uuid } = require('uuidv4');
 
 const projectSchema = new Schema({
   name:{
     type:String
   },
+  reporting_manager:{
+    type:mongoose.Schema.Types.ObjectId,ref:'Employee'
+  },
+  team_members:[{type:mongoose.Schema.Types.ObjectId,ref:'Employee'}],
+  status:{
+    type:'String',
+    default:'Not Yet Started',
+  },
   website:{
     type:String
   },
+  start:{
+    type:Date
+  },
+  end:{
+    type:Date
+  },
+  project:{
+    type:String,
+  },
+  id:{
+    type:String,
+  },
+  progress:{
+    type:Number,
+    default:0
+  },
+  type:{
+    type:String,
+    default:'project'
+  },
+  project_type:{
+    type:'String'
+  },
+  google_webmaster_username:{
+    type:String,
+  },
+  google_webmaster_password:{
+    type:String,
+  },
+  bing_username:{
+    type:String,
+  },
+  bing_password:{
+    type:String,
+  },
+  google_analytic_username:{
+    type:String,
+  },
+  google_analytic_password:{
+    type:String,
+  },
+  show_facebook:{
+    type:Boolean,
+    default:true
+  },
+  show_instagram:{
+    type:Boolean,
+    default:true
+  },
+  show_twitter:{
+    type:Boolean,
+    default:true
+  },
+  show_linkedin:{
+    type:Boolean,
+    default:true
+  },
+  show_pinterest:{
+    type:Boolean,
+    default:true
+  },
+
+
+  facebook_profile_url:{
+    type:String
+  },
+  facebook_profile_username:{
+    type:String
+  },
+  facebook_profile_password:{
+    type:String
+  },
+  instagram_profile_url:{
+    type:String
+  },
+  instagram_profile_username:{
+    type:String
+  },
+  instagram_profile_password:{
+    type:String
+  },
+  twitter_profile_url:{
+    type:String
+  },
+  twitter_profile_username:{
+    type:String
+  },
+  twitter_profile_password:{
+    type:String
+  },
+  linkdin_profile_url:{
+    type:String
+  },
+  linkdin_profile_username:{
+    type:String
+  },
+  linkdin_profile_password:{
+    type:String
+  },
+  pintrest_profile_url:{
+    type:String
+  },
+  pintrest_profile_username:{
+    type:String
+  },
+  pintrest_profile_password:{
+    type:String
+  },
+  target_market:{
+    type:String,
+    default:'Local'
+  },
+  target_countries:{
+    type:Object,
+    default:[]
+  }
+
 },{timestamps:true});
 
 const Project = mongoose.model('Project',projectSchema);
