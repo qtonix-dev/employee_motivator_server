@@ -161,9 +161,9 @@ const web_birthday = (req,res) => {
   BirthdayImages.find({isActive:true})
   .then(bday_image=>{
 
-    Employee.find({dob:{$gte:today.toDate(),$lte:today1.toDate()}})
+    Employee.find({dob:{$gte:today.toDate(),$lte:today1.toDate()}}).select('name picture')
     .then(response=>{
-        
+
         res.json({
           response:true,
           bday_image:bday_image.length>0?bday_image[0].image.url:false,
