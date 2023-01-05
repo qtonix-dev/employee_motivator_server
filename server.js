@@ -69,7 +69,7 @@ app.use(bodyParser.json());
 // app.use(expressip().getIpInfoMiddleware);
 
 
-var whitelist = ['https://employee-motivator-admin.vercel.app', 'http://localhost:3000', 'http://localhost:3001']
+var whitelist = ['https://employee-motivator-admin.vercel.app','https://employee-motivator-web.vercel.app', 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002']
 var corsOptions = {
   origin: function (origin, callback) {
     // if (whitelist.indexOf(origin) !== -1) {
