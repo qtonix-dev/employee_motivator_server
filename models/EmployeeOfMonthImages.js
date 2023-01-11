@@ -9,6 +9,7 @@ const birthdayImageSchema = new Schema({
   fillText:{
    type: String
   },
+
   fillTextFontSizeforName:{
    type: String
   },
@@ -18,6 +19,12 @@ const birthdayImageSchema = new Schema({
   fillStyleforName:{
    type: String
   },
+
+
+
+
+
+
   fillTextFontSize:{
      type:String
   },
@@ -50,5 +57,5 @@ const birthdayImageSchema = new Schema({
   },
 },{timestamps:true});
 
-const BirthdayImage = mongoose.model('BirthdayImage',birthdayImageSchema);
-module.exports = BirthdayImage;
+const EmployeeOfMonthImages = mongoose.model('EmployeeOfMonthImages',birthdayImageSchema);
+module.exports = EmployeeOfMonthImages;

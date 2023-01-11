@@ -23,6 +23,14 @@ const RouteCompany = require('./routes/company');
 const RouteImage = require('./routes/image');
 const RouteProject = require('./routes/project');
 const RouteBirthday = require('./routes/birthday');
+const RouteScrollText = require('./routes/scrolltext');
+const RouteEmployeeofMonth = require('./routes/employeeofmonth');
+const RouteWorkAnniversary = require('./routes/workanniversary');
+const RouteWebPreview = require('./routes/webpreview');
+
+
+
+
 
 
 //===ROUTE INCLUDE===
@@ -186,21 +194,17 @@ app.use('/api/company',RouteCompany);
 app.use('/api/image',RouteImage);
 app.use('/api/project',RouteProject);
 app.use('/api/birthday',RouteBirthday);
+app.use('/api/scrolltext',RouteScrollText);
+app.use('/api/employeeofmonth',RouteEmployeeofMonth);
+app.use('/api/workanniversary',RouteWorkAnniversary);
+app.use('/api/webpreview',RouteWebPreview);
 //API ROUTES
-
-
-
 
 
 //GET IMAGES FROM DIR
 app.use('/uploads/userimages/', express.static('uploads/userimages'));
 app.use('/uploads/blogcategoryimages/', express.static('uploads/blogcategoryimages'));
 app.use('/uploads/blogimages/', express.static('uploads/blogimages'));
-
-
-
-
-
 
 
 // //////check protected RouteUser

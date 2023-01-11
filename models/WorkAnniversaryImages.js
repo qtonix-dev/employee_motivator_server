@@ -50,5 +50,5 @@ const birthdayImageSchema = new Schema({
   },
 },{timestamps:true});
 
-const BirthdayImage = mongoose.model('BirthdayImage',birthdayImageSchema);
-module.exports = BirthdayImage;
+const WorkAnniversaryImages = mongoose.model('WorkAnniversaryImages',birthdayImageSchema);
+module.exports = WorkAnniversaryImages;

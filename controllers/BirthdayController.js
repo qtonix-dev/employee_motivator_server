@@ -4,8 +4,9 @@ const Company = require('../models/Company');
 const BirthdayImages = require('../models/BirthdayImages');
 const BirthdayImagesSub = require('../models/BirthdayImagesSub');
 const Employee = require('../models/Employee');
-var moment = require('moment');
+const ScrollText = require('../models/ScrollText');
 
+var moment = require('moment');
 
 var mongoose = require('mongoose');
 const ImageKit = require("imagekit");
@@ -153,7 +154,7 @@ const deleteimage = (req,res) => {
 
 
 
-const web_birthday = (req,res) => {
+const web_birthday = (req,res)  => {
 
   const today = moment().startOf('day');
   const today1 = moment().endOf('day');
@@ -161,14 +162,20 @@ const web_birthday = (req,res) => {
   BirthdayImages.find({isActive:true})
   .then(bday_image=>{
 
-    Employee.find({dob:{$gte:today.toDate(),$lte:today1.toDate()}}).select('name picture')
+    Employee.find({dob:{$gte:today.toDate(),$lte:today1.toDate()}})
     .then(response=>{
 
-        res.json({
-          response:true,
-          bday_image:bday_image.length>0?bday_image[0].image.url:false,
-          employees:response.length>0?response:false
+        ScrollText.find({status:true}).distinct('name')
+        .then(scrolltext=>{
+          res.json({
+            response:true,
+            bday_image:bday_image.length>0?bday_image[0]:false,
+            employees:response.length>0?response:false,
+            scrol_text:scrolltext
+          })
         })
+
+
 
       })
 
@@ -198,5 +205,17 @@ console.log(moment().format("MM DD ddd, YYYY HH:mm:ss a"));
 }
 
 
+
+const update_birthday_info = (req,res) => {
+
+  BirthdayImages.findByIdAndUpdate(req.body._id,req.body)
+  .then(response=>{
+    res.json({
+      response:true
+    })
+  })
+}
+
+
 // **MODULE EXPORTS**
-module.exports = {index,uploadimage,images,uploadimagesub,today_birthday_list,update_status,deleteimage,web_birthday}
+module.exports = {index,update_birthday_info,uploadimage,images,uploadimagesub,today_birthday_list,update_status,deleteimage,web_birthday}

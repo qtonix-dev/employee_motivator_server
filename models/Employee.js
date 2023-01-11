@@ -44,7 +44,7 @@ const employeeSchema = new Schema({
   gender:{
     type:String
   },
-  blood_group:{
+  bloodgroup:{
     type:String
   },
   father_name:{

@@ -12,6 +12,8 @@ router.get('/',BirthdayController.index);
 router.get('/web_birthday',BirthdayController.web_birthday);
 
 
+router.post('/update_birthday_info',BirthdayController.update_birthday_info);
+
 
 router.post('/uploadimage',upload.single('image'),BirthdayController.uploadimage);
 router.get('/images',BirthdayController.images);
